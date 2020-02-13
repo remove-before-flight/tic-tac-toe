@@ -31,7 +31,7 @@ interface BoardState {
 class Board extends React.Component<BoardProps, BoardState> {
     renderSquare(i: number) {
         let highlight = false;
-        if(this.props.winner){
+        if(this.props.winner?.winningLine){
             highlight = this.props.winner.winningLine.findIndex(j => j === i) !== -1;
         }
 
@@ -149,7 +149,11 @@ class Game extends React.Component<GameProps, GameState> {
 
         let status;
         if (winner) {
-            status = 'Winner: ' + winner.winner;
+            if(winner.winningLine){
+                status = 'Winner: ' + winner.winner;
+            } else {
+                status = 'Draw: No one wins'
+            }
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -181,7 +185,7 @@ ReactDOM.render(
 
 interface Winner {
     winner: string;
-    winningLine: number[];
+    winningLine: number[] | null;
 }
 
 function calculateWinner(squares: string[]): Winner | null {
@@ -204,5 +208,13 @@ function calculateWinner(squares: string[]): Winner | null {
             };
         }
     }
+    const emptySquares = squares.filter(i => i === null).length;
+    if(emptySquares === 0){
+        return {
+            winner: '',
+            winningLine: null
+        };
+    }
+
     return null;
 }
