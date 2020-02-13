@@ -65,6 +65,7 @@ interface GameState {
     history: HistoryItem[];
     xIsNext: boolean;
     stepNumber: number;
+    ascendingMoves: boolean;
 }
 interface GameProps { }
 class Game extends React.Component<GameProps, GameState> {
@@ -76,7 +77,8 @@ class Game extends React.Component<GameProps, GameState> {
                 moveLocation: null
             }],
             xIsNext: true,
-            stepNumber: 0
+            stepNumber: 0,
+            ascendingMoves: true
         }
     }
 
@@ -109,12 +111,18 @@ class Game extends React.Component<GameProps, GameState> {
         });
     }
 
+    ascendingOrDescendingMoves(){
+        this.setState({
+            ascendingMoves: !this.state.ascendingMoves
+        })
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
-        const moves = history.map((step, move) => {
+        let moves = history.map((step, move) => {
             const desc = move ?
                 'Go to move #' + move  + ' Location(' + step.moveLocation?.column +',' + step.moveLocation?.row + ')':
                 'Go to game start';
@@ -127,6 +135,9 @@ class Game extends React.Component<GameProps, GameState> {
                 </li>
             );
         });
+        if(!this.state.ascendingMoves){
+            moves = moves.reverse();
+        }
 
         let status;
         if (winner) {
@@ -144,6 +155,7 @@ class Game extends React.Component<GameProps, GameState> {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
+                    <button onClick={() => this.ascendingOrDescendingMoves()}>{this.state.ascendingMoves ? 'Ascending Moves' : 'Descending Moves'}</button>
                     <ol>{moves}</ol>
                 </div>
             </div>
