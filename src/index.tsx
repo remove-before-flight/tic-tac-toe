@@ -56,8 +56,13 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
 }
 
+interface MoveLocation {
+    column: number,
+    row: number
+}
 interface HistoryItem {
-    squares: string[]
+    squares: string[],
+    moveLocation: MoveLocation | null
 }
 interface GameState {
     history: HistoryItem[];
@@ -70,7 +75,8 @@ class Game extends React.Component<GameProps, GameState> {
         super(props);
         this.state = {
             history: [{
-                squares: Array(9).fill(null)
+                squares: Array(9).fill(null),
+                moveLocation: null
             }],
             xIsNext: true,
             stepNumber: 0
@@ -89,6 +95,10 @@ class Game extends React.Component<GameProps, GameState> {
         this.setState({
             history: history.concat([{
                 squares: squares,
+                moveLocation: {
+                    column: (i % 3) + 1,
+                    row: ((i / 3) >> 0) + 1
+                }
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
@@ -109,7 +119,7 @@ class Game extends React.Component<GameProps, GameState> {
 
         const moves = history.map((step, move) => {
             const desc = move ?
-                'Go to move #' + move :
+                'Go to move #' + move  + ' Location(' + step.moveLocation?.column +',' + step.moveLocation?.row + ')':
                 'Go to game start';
             return (
                 <li key={move}>
