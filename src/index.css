@@ -52,3 +52,7 @@ body {
   button.boldButton {
       font-weight: bolder;
   }
+
+  button.square.highlight {
+      background-color: yellow;
+  }
