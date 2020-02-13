@@ -28,29 +28,26 @@ interface BoardState {
 }
 class Board extends React.Component<BoardProps, BoardState> {
     renderSquare(i: number) {
-        return <Square
+        return <Square key={i}
             value={this.props.squares[i]}
             onClick={() => this.props.onClick(i)}
         />;
     }
+    renderBoard(){
+        const rows = [];
+        for (let i = 0; i < 3; i++) {
+            const cols = [];
+            for (let j = 0; j < 3; j++) {
+                cols.push(this.renderSquare(i*3+j));   
+            }
+            rows.push(<div key={i} className='board-row'>{cols}</div>)
+        }
+        return rows;
+    }
     render() {
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+                {this.renderBoard()}
             </div>
         );
     }
