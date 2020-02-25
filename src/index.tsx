@@ -67,7 +67,8 @@ interface MoveLocation {
 }
 interface HistoryItem {
     squares: string[],
-    moveLocation: MoveLocation | null
+    moveLocation: MoveLocation | null,
+    winner: Winner | null
 }
 interface GameState {
     history: HistoryItem[];
@@ -82,7 +83,8 @@ class Game extends React.Component<GameProps, GameState> {
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
-                moveLocation: null
+                moveLocation: null,
+                winner: null
             }],
             xIsNext: true,
             stepNumber: 0,
@@ -95,7 +97,7 @@ class Game extends React.Component<GameProps, GameState> {
         const current = history[this.state.stepNumber];
         const squares = current.squares.slice();
 
-        if (calculateWinner(squares) || squares[i]) {
+        if (current.winner || squares[i]) {
             return;
         }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -105,7 +107,8 @@ class Game extends React.Component<GameProps, GameState> {
                 moveLocation: {
                     column: (i % 3) + 1,
                     row: ((i / 3) >> 0) + 1
-                }
+                },
+                winner: calculateWinner(squares)
             }]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
@@ -128,8 +131,7 @@ class Game extends React.Component<GameProps, GameState> {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
-
+        
         let moves = history.map((step, move) => {
             const desc = move ?
                 'Go to move #' + move  + ' Location(' + step.moveLocation?.column +',' + step.moveLocation?.row + ')':
@@ -148,9 +150,9 @@ class Game extends React.Component<GameProps, GameState> {
         }
 
         let status;
-        if (winner) {
-            if(winner.winningLine){
-                status = 'Winner: ' + winner.winner;
+        if (current.winner) {
+            if(current.winner.winningLine){
+                status = 'Winner: ' + current.winner.winner;
             } else {
                 status = 'Draw: No one wins'
             }
@@ -162,7 +164,7 @@ class Game extends React.Component<GameProps, GameState> {
                 <div className="game-board">
                     <Board
                         squares={current.squares}
-                        winner={winner}
+                        winner={current.winner}
                         onClick={(i: number) => this.handleClick(i)}
                     />
                 </div>
