@@ -3,23 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.27",
-    "@types/react": "^16.9.19",
-    "@types/react-dom": "^16.9.5",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1",
-    "typescript": "^3.7.5"
+    "@testing-library/jest-dom": "5.11.9",
+    "@testing-library/react": "11.2.5",
+    "@testing-library/user-event": "12.8.1",
+    "@types/jest": "26.0.20",
+    "@types/node": "14.14.31",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-scripts": "4.0.3",
+    "typescript": "4.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "update:packages": "node wipe-dependencies.js && rm -rfv node_modules && npm update --save-dev && npm update --save"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +36,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.tsx",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remove-before-flight/tic-tac-toe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remove-before-flight/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/remove-before-flight/tic-tac-toe#readme"
 }
